@@ -14,7 +14,7 @@
 	    var self = this;
 	    self.clearCars();
 	    _.each(commands, function(command){
-		self.at(command.location).place(command.car);
+		self.at(command.target).place(command.car);
 	    });
 	},
 
@@ -41,17 +41,32 @@
 	},
 	
 	update : function() {
-	    var segments = this.get("segments");
+	    var self = this;
+	    var segments = self.get("segments");
 	    var commands = [];
 	    segments.each(function(segment, index){
 		if(segment.has("car")) {
 		    var car = segment.get("car");
-		    commands.push({
+		    var command = {
 			"car" : car,
-			"location" : index + car.get("speed")
-		    });
+			"current" : index,
+			"target" : (index + car.get("speed")) % self.get("track_length")
+		    };
+		    commands.push(command);
 		}
 	    });
+	    if(commands.length > 1) {
+		_.each(commands, function(command, index){
+		    if (index < commands.length - 1) {
+			var next = commands[index + 1];
+			if (command.target > next.target) {
+			    console.log("collision avoidance");
+			    command.target = next.target - 1;
+			    command.car.setSpeedTo(command.target - command.current);
+			}
+		    }
+		});
+	    }
 	    segments.updateTo(commands);
 	}
 
