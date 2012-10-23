@@ -57,20 +57,18 @@
 	    });
 	    if(commands.length > 1) {
 		_.each(commands, function(command, index){
+		    var next, mark;
 		    if (index < commands.length - 1) {
-			var next = commands[index + 1];
-			if (command.target > next.target) {
-			    command.target = next.target - 1;
-			    command.car.setSpeedTo(command.target - command.current);
-			}
+			next = commands[index + 1];
+			mark = next.target;
 		    } else {
-			var next = commands[0];
-			var mark = next.target + self.get("track_length");
-			if (command.target > mark) {
-			    command.target = mark - 1;
-			    command.car.setSpeedTo(command.target - command.current);
-			}
+			next = commands[0];
+			mark = next.target + self.get("track_length");
 			
+		    }
+		    if (command.target >= mark) {
+			command.target = mark - 1;
+			command.car.setSpeedTo(command.target - command.current);
 		    }
 		});
 	    }
