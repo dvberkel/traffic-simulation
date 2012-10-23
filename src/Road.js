@@ -56,8 +56,8 @@
 		}
 	    });
 	    if(commands.length > 1) {
-		_.each(commands, function(command, index){
-		    var next, mark;
+		_.each(commands, function(command, start){
+		    var subject = command, index = start, next, mark;
 		    if (index < commands.length - 1) {
 			next = commands[index + 1];
 			mark = next.target;
@@ -66,9 +66,13 @@
 			mark = next.target + self.get("track_length");
 			
 		    }
-		    if (command.target >= mark) {
-			command.target = mark - 1;
-			command.car.setSpeedTo(command.target - command.current);
+		   while (index >= 0 && subject.target >= mark) {
+			subject.target = mark - 1;
+			subject.car.setSpeedTo(subject.target - subject.current);
+
+			mark = subject.target;
+			index--;
+			subject = commands[index];
 		    }
 		});
 	    }

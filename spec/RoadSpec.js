@@ -58,4 +58,20 @@ describe("A Road", function(){
 	expect(road).toHaveAnCarAt(3);
 	expect(road.at(3).get("car")).toHaveSpeed(1);
     });
+
+    it("should correct all cars if one can not make it ", function(){
+	var road = new Traffic.Road({ "track_length" : 10});
+	road.at(0).place(new Traffic.Car({ "speed" : 5 }));
+	road.at(1).place(new Traffic.Car({ "speed" : 5 }));
+	road.at(2).place(new Traffic.Car({ "speed" : 1 }));
+
+	road.update();
+
+	expect(road).toHaveAnCarAt(1);
+	expect(road.at(1).get("car")).toHaveSpeed(1);
+	expect(road).toHaveAnCarAt(2);
+	expect(road.at(2).get("car")).toHaveSpeed(1);
+	expect(road).toHaveAnCarAt(3);
+	expect(road.at(3).get("car")).toHaveSpeed(1);
+    });
 });
