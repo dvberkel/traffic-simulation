@@ -45,4 +45,17 @@ describe("A Road", function(){
 	expect(road).toHaveAnCarAt(3);
 	expect(road.at(3).get("car")).toHaveSpeed(1);
     });
+
+    it("should not update passed an other car around the end", function(){
+	var road = new Traffic.Road({ "track_length" : 10});
+	road.at(2).place(new Traffic.Car({ "speed" : 1 }));
+	road.at(9).place(new Traffic.Car({ "speed" : 5 }));
+
+	road.update();
+
+	expect(road).toHaveAnCarAt(2);
+	expect(road.at(2).get("car")).toHaveSpeed(3);
+	expect(road).toHaveAnCarAt(3);
+	expect(road.at(3).get("car")).toHaveSpeed(1);
+    });
 });

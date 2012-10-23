@@ -1,6 +1,6 @@
 (function($, _, Backbone, Traffic, undefined){
     var Segment = Backbone.Model.extend({
-	default : { "car" : undefined },
+	defaults : { "car" : undefined },
 
 	place : function(car) {
 	    this.set("car", car);
@@ -14,7 +14,7 @@
 	    var self = this;
 	    self.clearCars();
 	    _.each(commands, function(command){
-		self.at(command.target).place(command.car);
+		self.at(command.target % self.length).place(command.car);
 	    });
 	},
 
@@ -50,7 +50,7 @@
 		    var command = {
 			"car" : car,
 			"current" : index,
-			"target" : (index + car.get("speed")) % self.get("track_length")
+			"target" : (index + car.get("speed"))
 		    };
 		    commands.push(command);
 		}
@@ -60,10 +60,17 @@
 		    if (index < commands.length - 1) {
 			var next = commands[index + 1];
 			if (command.target > next.target) {
-			    console.log("collision avoidance");
 			    command.target = next.target - 1;
 			    command.car.setSpeedTo(command.target - command.current);
 			}
+		    } else {
+			var next = commands[0];
+			var mark = next.target + self.get("track_length");
+			if (command.target > mark) {
+			    command.target = mark - 1;
+			    command.car.setSpeedTo(command.target - command.current);
+			}
+			
 		    }
 		});
 	    }
