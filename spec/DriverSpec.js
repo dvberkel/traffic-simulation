@@ -42,9 +42,17 @@ describe("A Driver", function(){
 	});
     });
 
-    describe("(Rule)", function(){
+    describe("(RuleBased)", function(){
 	it("should by default respond with maximum speed", function(){
-	    driver = new Traffic.Driver.rule();
+	    driver = new Traffic.Driver.ruleBased();
+
+	    var suggestion = driver.respondTo(car, 1);
+
+	    expect(suggestion).toBe(car.get("maximum_speed"));
+	});
+
+	it("should by default respond with maximum speed", function(){
+	    driver = new Traffic.Driver.ruleBased();
 
 	    var suggestion = driver.respondTo(car, 1);
 

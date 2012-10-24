@@ -19,7 +19,7 @@
 	return { "respondTo" : strategy }
     }
 
-    var Rule = Backbone.Model.extend({
+    var RuleBased = Backbone.Model.extend({
 	
 	respondTo: function(car){
 	    return car.get("maximum_speed");
@@ -30,7 +30,7 @@
 	"constant" : wrap(constant),
 	"speedUp" : wrap(speedUp),
 	"target" : reachFor,
-	"rule" : Rule
+	"ruleBased" : RuleBased
     };
 
     Traffic.Driver = Driver;
