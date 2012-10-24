@@ -45,5 +45,38 @@ describe("A Car", function(){
 
 	expect(car).toHaveSpeed(1 + 2);
     });
+    
+    it("should have default updater function that keeps speed steady", function(){
+    	var car = new Traffic.Car({
+    	    "speed" : 1,
+    	    "acceleration" : 2
+    	});
+    	car.updateSpeed(0);
+    	
+    	expect(car).toHaveSpeed(1);
+    });
+    
+    it("should use given updater function to update speed", function(){
+    	var car = new Traffic.Car({
+    	    "speed" : 1,
+    	    "acceleration" : 2,
+    	    "updater" : function(attributes){return 2}
+    	});
+    	car.updateSpeed(1);
+    	
+    	expect(car).toHaveSpeed(2);
+    });
+    
+    it("should not break speed rules when using given updater function to update speed", function(){
+    	var car = new Traffic.Car({
+    	    "speed" : 1,
+    	    "acceleration" : 1,
+    	    "max_speed" : 2,
+    	    "updater" : function(attributes){return 12}
+    	});
+    	car.updateSpeed(1);
+    	
+    	expect(car).toHaveSpeed(2);
+    });
 
 });
