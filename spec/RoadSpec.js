@@ -91,9 +91,9 @@ describe("A Road", function(){
 	var mockDriver = new (function(){
 	    var seen = -1;
 
-	    this.respondTo = function(distance){
+	    this.respondTo = function(car, distance){
 		seen = distance;
-		return this.get("speed");
+		return car.get("speed");
 	    };
 
 	    this.distanceSeen = function(){
@@ -104,8 +104,6 @@ describe("A Road", function(){
 	road.at(2).place(new Traffic.Car({ "speed" : 0 }));
 
 	road.update();
-
-	console.log(mockDriver);
 
 	expect(mockDriver.distanceSeen()).toBe(2);
     });

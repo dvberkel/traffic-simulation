@@ -1,12 +1,12 @@
 (function($, _, Backbone, Traffic){
     var Driver = {};
 
-    var constant = function(distance) {
-	return this.get("speed");
+    var constant = function(car, distance) {
+	return car.get("speed");
     }
 
-    var speedUp = function(distance) {
-	return this.get("speed") + 1;
+    var speedUp = function(car,distance) {
+	return car.get("speed") + 1;
     }
 
     var reachFor = function(target){
@@ -19,10 +19,18 @@
 	return { "respondTo" : strategy }
     }
 
+    var Rule = Backbone.Model.extend({
+	
+	respondTo: function(car){
+	    return car.get("maximum_speed");
+	}
+    });
+
     var Driver = { 
 	"constant" : wrap(constant),
 	"speedUp" : wrap(speedUp),
-	"target" : reachFor
+	"target" : reachFor,
+	"rule" : Rule
     };
 
     Traffic.Driver = Driver;

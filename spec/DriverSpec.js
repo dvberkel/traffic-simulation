@@ -12,7 +12,7 @@ describe("A Driver", function(){
 	});
 
 	it("should respond to distances", function(){
-	    var suggestion = driver.respondTo.call(car, 1);
+	    var suggestion = driver.respondTo(car, 1);
 
 	    expect(suggestion).toBe(car.get("speed"));
 	});
@@ -24,7 +24,7 @@ describe("A Driver", function(){
 	});
 
 	it("should respond to distances", function(){
-	    var suggestion = driver.respondTo.call(car, 1);
+	    var suggestion = driver.respondTo(car, 1);
 
 	    expect(suggestion).toBe(car.get("speed") + 1);
 	});
@@ -36,9 +36,19 @@ describe("A Driver", function(){
 	});
 
 	it("should respond to distances", function(){
-	    var suggestion = driver.respondTo.call(car, 1);
+	    var suggestion = driver.respondTo(car, 1);
 
 	    expect(suggestion).toBe(4);
+	});
+    });
+
+    describe("(Rule)", function(){
+	it("should by default respond with maximum speed", function(){
+	    driver = new Traffic.Driver.rule();
+
+	    var suggestion = driver.respondTo(car, 1);
+
+	    expect(suggestion).toBe(car.get("maximum_speed"));
 	});
     });
 });

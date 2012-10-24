@@ -19,7 +19,7 @@
 	},
 	
 	updateSpeed : function(distance) {
-		this.setSpeedTo(this.get("driver").respondTo.call(this, distance));
+		this.setSpeedTo(this.get("driver").respondTo(this, distance));
 	}
 		
     });
