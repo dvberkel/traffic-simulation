@@ -51,12 +51,18 @@ describe("A Driver", function(){
 	    expect(suggestion).toBe(car.get("maximum_speed"));
 	});
 
-	it("should by default respond with maximum speed", function(){
+	it("should by able to add a Rule", function(){
 	    driver = new Traffic.Driver.ruleBased();
+	    driver.add(new Traffic.Driver.Rule({
+		"left" : "distance",
+		"operator" : "<=",
+		"right" : 2,
+		"suggestion" : 2
+	    }));
 
 	    var suggestion = driver.respondTo(car, 1);
 
-	    expect(suggestion).toBe(car.get("maximum_speed"));
+	    expect(suggestion).toBe(2);
 	});
     });
 });
