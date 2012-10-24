@@ -109,7 +109,7 @@
 
     var PlayPauseControl = Backbone.View.extend({
 	events : {
-	    "click" : "playPauze"
+	    "click button.pauzePlay" : "playPauze"
 	},
 
 	initialize : function(){
@@ -118,7 +118,7 @@
 
 	render : function(){
 	    var self = this;
-	    this.button = $("<button />");
+	    this.button = $("<button class='pauzePlay' />");
 	    this.button.text(">");
 	    this.button.appendTo(self.$el);
 	},
