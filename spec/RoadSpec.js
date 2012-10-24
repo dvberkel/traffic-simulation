@@ -22,6 +22,7 @@ describe("A Road", function(){
 	road.update();
 
 	expect(road).toHaveAnCarAt(1);
+	expect(road).not.toHaveAnCarAt(0);
     });
 
     it("should be connected end to end", function(){
