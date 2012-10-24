@@ -89,6 +89,7 @@
 	    controls.appendTo(this.$el);
 	    new StepControl({ model : this.model, el : controls });
 	    new PlayPauseControl({ model : this.model, el : controls });
+	    new DriverControl({ model : this.model.get("driver"), el : controls });
 	}
     });
 
@@ -136,5 +137,123 @@
 	}
     });
     
+    var DriverControl = Backbone.View.extend({
+	initialize : function(){
+	    this.render();
+	},
+
+	render : function(){
+	    var container = $("<div class='rules'/>");
+	    container.appendTo(this.$el);
+	    new CreateRuleControl({ model : this.model, el :container });
+	    new RulesView({ model : this.model, el : container });
+	}
+    });
+
+    var CreateRuleControl = Backbone.View.extend({
+	initialize : function(){
+	    this.render();
+	},
+
+	render : function(){
+	    var container = $("<div class='create'/>");
+	    container.appendTo(this.$el);
+	    container.append(this.left());
+	    container.append(this.operator());
+	    container.append(this.right());
+	    container.append(this.suggestion());
+	    container.append(this.create(this.left(), this.operator(), this.right(), this.suggestion()));
+	},
+
+	left : function(){
+	    if (!this._left) {
+		var select = $("<select id='left'></select>");
+		select.append("<option>distance</option>");
+		select.append("<option>speed</option>");
+		this._left = select;
+	    }
+	    return this._left;
+	},
+
+	operator : function(){
+	    if(!this._operators) {
+		var select = $("<select id='operator'></select>");
+		select.append("<option>&lt;</option>");
+		select.append("<option>&lt;=</option>");
+		select.append("<option>==</option>");
+		select.append("<option>&gt;=</option>");
+		select.append("<option>&gt;</option>");
+		this._operators = select;
+	    }
+	    return this._operators;
+	},
+
+	right : function(){
+	    if(!this._right) {
+		var input = $("<input id='right' type='text' size='2' value='2'>");
+		this._right = input;
+	    }
+	    return this._right;
+	},
+
+	suggestion : function(){
+	    if(!this._suggestion) {
+		var input = $("<input id='suggestion' type='text' size='2' value='1'>");
+		this._suggestion = input;
+	    }
+	    return this._suggestion;
+	},
+
+	create : function(left, operator, right, suggestion){
+	    var self = this;
+	    var button = $("<button>Add</button>");
+	    button.click(function(){
+		self.model.add({
+		    "left" : left.val(),
+		    "operator" : operator.val(),
+		    "right" : right.val(),
+		    "suggestion" : suggestion.val()
+		});	
+	    });
+	    return button;
+	}
+    });
+    
+    var RulesView = Backbone.View.extend({
+	initialize : function(){
+	    this.model.on("add", this.render, this);
+	    this.render();
+	},
+
+	render : function(){
+	    var container = this.container();
+	    container.empty();
+	    this.model.each(function(rule){
+		new RuleView({ model : rule, el : container})
+	    });
+	},
+
+	container : function(){
+	    if (!this.ul) {
+		this.ul = $("<ul/>");
+		this.ul.appendTo(this.$el);
+	    }
+	    return this.ul;
+	}
+    });
+
+    var RuleView = Backbone.View.extend({
+	template : _.template("<li><%= left %> <%= operator %> <%= right %> |-> <%= suggestion %></li>"),
+
+	initialize : function(){
+	    this.render();
+	},
+
+	render : function(){
+	    var item = $(this.template(this.model.toJSON()));
+	    item.appendTo(this.$el);
+	}
+    });
+
     Traffic.MainView = MainView;
 })(jQuery, _, Backbone, Traffic);

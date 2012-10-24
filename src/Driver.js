@@ -22,7 +22,7 @@
 
     var Rule = Backbone.Model.extend({
 	defaults : {
-	    "left" : "location",
+	    "left" : "distance",
 	    "operator" : "<=",
 	    "right" : 2,
 	    "suggestion" : 2
