@@ -75,4 +75,38 @@ describe("A Road", function(){
 	expect(road).toHaveAnCarAt(3);
 	expect(road.at(3).get("car")).toHaveSpeed(1);
     });
+
+    it("should allow driver to change speed of car prior to update", function(){
+	var road = new Traffic.Road();
+	road.at(0).place(new Traffic.Car({ "speed" : 0, "driver" : Traffic.Driver.speedUp }));
+
+	road.update();
+
+	expect(road).toHaveAnCarAt(1);
+	expect(road.at(1).get("car")).toHaveSpeed(1);
+    });
+
+    it("should pass driver the distance to next car prior to update", function(){
+	var road = new Traffic.Road();
+	var mockDriver = new (function(){
+	    var seen = -1;
+
+	    this.respondTo = function(distance){
+		seen = distance;
+		return this.get("speed");
+	    };
+
+	    this.distanceSeen = function(){
+		return seen;
+	    }
+	})();
+	road.at(0).place(new Traffic.Car({ "speed" : 0, "driver" : mockDriver }));
+	road.at(2).place(new Traffic.Car({ "speed" : 0 }));
+
+	road.update();
+
+	console.log(mockDriver);
+
+	expect(mockDriver.distanceSeen()).toBe(2);
+    });
 });

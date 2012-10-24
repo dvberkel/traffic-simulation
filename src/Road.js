@@ -47,6 +47,7 @@
 	    segments.each(function(segment, index){
 		if(segment.has("car")) {
 		    var car = segment.get("car");
+		    car.updateSpeed(self.distanceToNextCarFrom(index));
 		    var command = {
 			"car" : car,
 			"current" : index,
@@ -77,6 +78,17 @@
 		});
 	    }
 	    segments.updateTo(commands);
+	},
+
+	distanceToNextCarFrom : function(index){
+	    var distance = this.get("track_length");
+	    for (var step = 1; step < distance; step++) {
+		if (this.at(index + step).has("car")) {
+		    distance = step;
+		    break;
+		}
+	    }
+	    return distance;
 	}
 
     });
