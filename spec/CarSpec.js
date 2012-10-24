@@ -35,7 +35,7 @@ describe("A Car", function(){
 	expect(car).toHaveSpeed(expected_speed);
     });
 
-    it("should not be able to speed faster then acceleration", function(){
+    it("should not be able to speed up faster than acceleration", function(){
 	var car = new Traffic.Car({
 	    "speed" : 1,
 	    "acceleration" : 2

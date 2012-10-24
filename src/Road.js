@@ -20,7 +20,7 @@
 
 	clearCars : function() {
 	    this.each(function(segment){
-		segment.set("car", undefined, { "silent" : true });
+		segment.set("car", undefined);
 	    });
 	}
     });
