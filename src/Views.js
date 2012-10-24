@@ -88,6 +88,7 @@
 	    var controls = $("<div class='controls' />");
 	    controls.appendTo(this.$el);
 	    new StepControl({ model : this.model, el : controls });
+	    new PlayPauseControl({ model : this.model, el : controls });
 	}
     });
 
@@ -103,6 +104,35 @@
 		self.model.update();
 	    });
 	    button.appendTo(self.$el);
+	}
+    });
+
+    var PlayPauseControl = Backbone.View.extend({
+	events : {
+	    "click" : "playPauze"
+	},
+
+	initialize : function(){
+	    this.render();
+	},
+
+	render : function(){
+	    var self = this;
+	    this.button = $("<button />");
+	    this.button.text(">");
+	    this.button.appendTo(self.$el);
+	},
+
+	playPauze : function(){
+	    var self = this;
+	    if (this.action) {
+		clearInterval(this.action);
+		this.action = undefined;
+		this.button.text(">");
+	    } else {
+		this.action = setInterval(function(){ self.model.update () }, 500);
+		this.button.text("=");
+	    };
 	}
     });
     

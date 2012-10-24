@@ -36,3 +36,7 @@
     left: 5%;
     width: 80%;
 }
+
+.controls button {
+    display: inline-block;
+}
