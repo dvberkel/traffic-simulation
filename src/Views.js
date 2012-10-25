@@ -158,64 +158,53 @@
 	render : function(){
 	    var container = $("<div class='create'/>");
 	    container.appendTo(this.$el);
-	    container.append(this.left());
-	    container.append(this.operator());
-	    container.append(this.right());
-	    container.append(this.suggestion());
-	    container.append(this.create(this.left(), this.operator(), this.right(), this.suggestion()));
+	    new SelectionView({ model : new TermModel({ id : "left" }), el : container, items : ["distance", "speed"]});
+	    new SelectionView({ model : new TermModel({ id : "operator" }), el : container, items : ["&lt;", "&lt;=", "==", "&gt;=", "&gt;"]});
+	    new SelectionView({ model : new TermModel({ id : "right" }), el : container, items : ["distance", "speed", "0", "1", "2", "3", "4", "5"]});
+	    new SelectionView({ model : new TermModel({ id : "suggestion" }), el : container, items : ["speed", "speed + 1", "speed - 1", "0", "1", "2", "3", "4", "5"]});
+	    new CreateView({ model : this.model, el : container, leftId : "left", operatorId : "operator", rightId : "right", suggestionId : "suggestion"});
+	}
+    });
+
+    var TermModel = Backbone.Model.extend({
+	defaults : { "id" : "left" }
+    });
+
+    var SelectionView = Backbone.View.extend({
+	selectionTemplate : _.template("<select id='<%= id %>'></select>"),
+	optionTemplate : _.template("<option><%= option %></option>"),
+
+	initialize : function(){
+	    this.render();
 	},
 
-	left : function(){
-	    if (!this._left) {
-		var select = $("<select id='left'></select>");
-		select.append("<option>distance</option>");
-		select.append("<option>speed</option>");
-		this._left = select;
-	    }
-	    return this._left;
+	render : function(){
+	    var self = this;
+	    var select = $(self.selectionTemplate(self.model.toJSON()));
+	    select.appendTo(self.$el);
+	    _.each(this.options.items, function(option){
+		select.append(self.optionTemplate({ "option" : option }));
+	    })
+	}
+    });
+    
+    var CreateView = Backbone.View.extend({
+	initialize : function(){
+	    this.render();
 	},
 
-	operator : function(){
-	    if(!this._operators) {
-		var select = $("<select id='operator'></select>");
-		select.append("<option>&lt;</option>");
-		select.append("<option>&lt;=</option>");
-		select.append("<option>==</option>");
-		select.append("<option>&gt;=</option>");
-		select.append("<option>&gt;</option>");
-		this._operators = select;
-	    }
-	    return this._operators;
-	},
-
-	right : function(){
-	    if(!this._right) {
-		var input = $("<input id='right' type='text' size='2' value='2'>");
-		this._right = input;
-	    }
-	    return this._right;
-	},
-
-	suggestion : function(){
-	    if(!this._suggestion) {
-		var input = $("<input id='suggestion' type='text' size='2' value='1'>");
-		this._suggestion = input;
-	    }
-	    return this._suggestion;
-	},
-
-	create : function(left, operator, right, suggestion){
+	render : function(){
 	    var self = this;
 	    var button = $("<button>Add</button>");
+	    button.appendTo(this.$el);
 	    button.click(function(){
 		self.model.add({
-		    "left" : left.val(),
-		    "operator" : operator.val(),
-		    "right" : right.val(),
-		    "suggestion" : suggestion.val()
+		    "left" : $("#" + self.options.leftId).val(),
+		    "operator" : $("#" + self.options.operatorId).val(),
+		    "right" : $("#" + self.options.rightId).val(),
+		    "suggestion" : $("#" + self.options.suggestionId).val()
 		});	
 	    });
-	    return button;
 	}
     });
     
