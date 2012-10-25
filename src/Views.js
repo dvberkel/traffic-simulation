@@ -145,7 +145,7 @@
 	render : function(){
 	    var container = $("<div class='rules'/>");
 	    container.appendTo(this.$el);
-	    new CreateRuleControl({ model : this.model, el :container });
+	    new CreateRuleControl({ model : this.model, el :container, maximum : 5 });
 	    new RulesView({ model : this.model, el : container });
 	}
     });
@@ -158,10 +158,11 @@
 	render : function(){
 	    var container = $("<div class='create'/>");
 	    container.appendTo(this.$el);
+	    var range = _.range(this.options.maximum + 1);
 	    new SelectionView({ model : new TermModel({ id : "left" }), el : container, items : ["distance", "speed"]});
 	    new SelectionView({ model : new TermModel({ id : "operator" }), el : container, items : ["&lt;", "&lt;=", "==", "&gt;=", "&gt;"]});
-	    new SelectionView({ model : new TermModel({ id : "right" }), el : container, items : ["distance", "speed", "0", "1", "2", "3", "4", "5"]});
-	    new SelectionView({ model : new TermModel({ id : "suggestion" }), el : container, items : ["speed", "speed + 1", "speed - 1", "0", "1", "2", "3", "4", "5"]});
+	    new SelectionView({ model : new TermModel({ id : "right" }), el : container, items : range.concat(["distance", "speed"])});
+	    new SelectionView({ model : new TermModel({ id : "suggestion" }), el : container, items : range.concat(["speed", "speed + 1", "speed - 1"])});
 	    new CreateView({ model : this.model, el : container, leftId : "left", operatorId : "operator", rightId : "right", suggestionId : "suggestion"});
 	}
     });
