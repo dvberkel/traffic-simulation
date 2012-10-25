@@ -34,13 +34,16 @@
 	render : function(){
 	    var container = $("<div class='segments' />")
 	    container.appendTo(this.$el);
-	    this.model.get("segments").each(function(segment){
-		new SegmentView({ model : segment, el : container });
+	    var segments = this.model.get("segments");
+	    segments.each(function(segment){
+		new SegmentView({ model : segment, el : container, N : segments.length });
 	    });
 	}
     });
 
     var SegmentView = Backbone.View.extend({
+	template : _.template("<span class='segment' style='width: <%= width %>'/>"),
+
 	initialize : function(){
 	    this.model.on("change:car", this.render, this);
 
@@ -58,7 +61,8 @@
 	container : function(){
 	    var self = this;
 	    if (! self.options.container ) {
-		var container = $("<span class='segment'/>");
+		var width = "" + 100.0 / self.options.N + "%";
+		var container = $(self.template({ width : width }));
 		container.appendTo(self.$el);
 		container.click(function(){
 		    if(self.model.has("car")) {

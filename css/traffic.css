@@ -16,8 +16,6 @@
     border-color: white;
     border-style: dashed none none none;
     border-width: 3px;
-    overflow: hidden;
-    white-space: nowrap;
 }
 
 .segment {
