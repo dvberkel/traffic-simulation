@@ -1,11 +1,11 @@
 (function($, Traffic){
     var driver = new Traffic.Driver.ruleBased();
-    driver.add(new Traffic.Driver.Rule());
+    driver.add(new Traffic.Driver.Rule({ "suggestion" : 0 }));
 
     var road = new Traffic.Road({ "driver" : driver });
-    road.at(2).place(new Traffic.Car({ "speed" : 1 }));
-    road.at(5).place(new Traffic.Car({ "speed" : 2 }));
-    road.at(13).place(new Traffic.Car({ "speed" : 3 }));
+    road.at(1).place(new Traffic.Car({ "speed" : 0 }));
+    road.at(2).place(new Traffic.Car({ "speed" : 0 }));
+    road.at(3).place(new Traffic.Car({ "speed" : 0 }));
     
     $(function(){
 	new Traffic.MainView({ model : road, el : $("body") });
