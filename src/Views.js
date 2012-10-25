@@ -216,10 +216,11 @@
 	},
 
 	render : function(){
-	    var container = this.container();
+	    var self = this;
+	    var container = self.container();
 	    container.empty();
-	    this.model.each(function(rule){
-		new RuleView({ model : rule, el : container})
+	    self.model.each(function(rule){
+		new RuleView({ model : rule, el : container, driver : self.model });
 	    });
 	},
 
@@ -240,8 +241,14 @@
 	},
 
 	render : function(){
-	    var item = $(this.template(this.model.toJSON()));
-	    item.appendTo(this.$el);
+	    var self = this;
+	    voar item = $(self.template(self.model.toJSON()));
+	    item.appendTo(self.$el);
+	    var button = $("<button>x</button>");
+	    button.appendTo(item);
+	    button.click(function(){
+		self.options.driver.remove(self.model);
+	    });
 	}
     });
 
