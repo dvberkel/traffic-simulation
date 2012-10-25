@@ -235,7 +235,7 @@
     });
 
     var RuleView = Backbone.View.extend({
-	template : _.template("<li><tt>if(<%= left %> <%= operator %> <%= right %>){ return <%= suggestion %>;}</tt></li>"),
+	template : _.template("<li><tt>if(<%= left %> <%= operator %> <%= right %>){ return <%= suggestion %>; }</tt></li>"),
 
 	initialize : function(){
 	    this.render();
