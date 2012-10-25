@@ -1,8 +1,11 @@
 (function($, _, Backbone, Traffic, undefined){
     var Segment = Backbone.Model.extend({
-	defaults : { "car" : undefined },
+	defaults : { "car" : undefined, "driver" : Traffic.Driver.constant },
 
 	place : function(car) {
+	    if (!car.has("driver")) {
+		car.set("driver", this.get("driver"));
+	    }
 	    this.set("car", car);
 	}
     });
@@ -26,12 +29,13 @@
     });
     
     var Road = Backbone.Model.extend({
-	defaults : { "track_length" : 30 },
+	defaults : { "track_length" : 30, "driver" : Traffic.Driver.constant },
 
 	initialize : function(){
+	    var self = this;
 	    var segments = new Segments();
 	    _.each(_.range(this.get("track_length")), function(){
-		segments.add({});
+		segments.add({ "driver" : self.get("driver") });
 	    });
 	    this.set("segments", segments);
 	},

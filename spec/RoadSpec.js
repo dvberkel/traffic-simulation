@@ -107,4 +107,16 @@ describe("A Road", function(){
 
 	expect(mockDriver.distanceSeen()).toBe(2);
     });
+
+    it("should added cars should inherit driver from road", function(){
+	var driver = {
+	    marker : "mark",
+	    respondTo : function(){ /* do nothing */ }
+	};
+	var road = new Traffic.Road({ "driver" : driver });
+
+	road.at(0).place(new Traffic.Car({ "speed" : 0, "driver" : undefined }));
+
+	expect(road.at(0).get("car").get("driver").marker).toBe("mark");
+    });
 });
