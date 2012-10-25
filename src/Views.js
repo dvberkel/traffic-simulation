@@ -242,7 +242,7 @@
 
 	render : function(){
 	    var self = this;
-	    voar item = $(self.template(self.model.toJSON()));
+	    var item = $(self.template(self.model.toJSON()));
 	    item.appendTo(self.$el);
 	    var button = $("<button>x</button>");
 	    button.appendTo(item);
