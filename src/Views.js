@@ -56,12 +56,20 @@
 	},
 
 	container : function(){
-	    if (! this.options.container ) {
+	    var self = this;
+	    if (! self.options.container ) {
 		var container = $("<span class='segment'/>");
-		container.appendTo(this.$el);
-		this.options.container = container;
+		container.appendTo(self.$el);
+		container.click(function(){
+		    if(self.model.has("car")) {
+			self.model.clearCar();
+		    } else {
+			self.model.place(new Traffic.Car({ "speed" : 0 }));
+		    }
+		});
+		self.options.container = container;
 	    }
-	    return this.options.container;
+	    return self.options.container;
 	}
     });
 

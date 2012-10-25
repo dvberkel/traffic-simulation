@@ -7,6 +7,10 @@
 		car.set("driver", this.get("driver"));
 	    }
 	    this.set("car", car);
+	},
+
+	clearCar : function(){
+	    this.set("car", undefined);
 	}
     });
 
@@ -23,7 +27,7 @@
 
 	clearCars : function() {
 	    this.each(function(segment){
-		segment.set("car", undefined);
+		segment.clearCar();
 	    });
 	}
     });
