@@ -212,6 +212,7 @@
     var RulesView = Backbone.View.extend({
 	initialize : function(){
 	    this.model.on("add", this.render, this);
+	    this.model.on("remove", this.render, this);
 	    this.render();
 	},
 
