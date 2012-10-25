@@ -32,11 +32,11 @@
 	},
 
 	render : function(){
-	    var segments = $("<div class='segments' />")
+	    var container = $("<div class='segments' />")
+	    container.appendTo(this.$el);
 	    this.model.get("segments").each(function(segment){
-		new SegmentView({ model : segment, el : segments });
+		new SegmentView({ model : segment, el : container });
 	    });
-	    segments.appendTo(this.$el);
 	}
     });
 
